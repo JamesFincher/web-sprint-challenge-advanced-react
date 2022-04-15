@@ -47,14 +47,14 @@ export default function AppFunctional(props) {
         // console.log(message);
         setX(initialState.x);
         setY(initialState.y);
-        setSteps(initialState.steps);
+        // setSteps(initialState.steps);
         setEmail(initialState.email);
         setMessage(message);
       })
       .catch((err) => {
-        const { message } = err.message;
-        console.log(err);
-        setMessage(err.message);
+        const { message } = err.response.data;
+        console.log(message);
+        setMessage(message);
       });
   };
   //controller logic grid navagation
@@ -79,6 +79,34 @@ export default function AppFunctional(props) {
     }
   };
 
+  //function to handle the move up event
+  const moveUp = () => {
+    if (y > 1) {
+      setY(y - 1);
+      setSteps(steps + 1);
+    } else {
+      setMessage("You can't go up");
+    }
+  };
+
+  //function to handle the move down event
+  const moveDown = () => {
+    if (y >= 1 && y < 3) {
+      setY(y + 1);
+      setSteps(steps + 1);
+    } else {
+      setMessage("You can't go down");
+    }
+  };
+
+  // function to handle the reset click event
+  const reset = () => {
+    setX(initialState.x);
+    setY(initialState.y);
+    setSteps(initialState.steps);
+    setEmail(initialState.email);
+    setMessage(initialState.message);
+  };
   return (
     <div id="wrapper" className={props.className}>
       <div className="info">
@@ -105,12 +133,18 @@ export default function AppFunctional(props) {
         <button id="left" onClick={moveLeft}>
           LEFT
         </button>
-        <button id="up">UP</button>
+        <button id="up" onClick={moveUp}>
+          UP
+        </button>
         <button id="right" onClick={moveRight}>
           RIGHT
         </button>
-        <button id="down">DOWN</button>
-        <button id="reset">reset</button>
+        <button id="down" onClick={moveDown}>
+          DOWN
+        </button>
+        <button id="reset" onClick={reset}>
+          reset
+        </button>
       </div>
       <form onSubmit={onSubmit}>
         <input
