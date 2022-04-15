@@ -31,6 +31,29 @@ export default function AppFunctional(props) {
   const [message, setMessage] = React.useState(initialState.message);
 
   //helpers for the form
+  const onChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    const payload = { x, y, email, steps };
+    axios
+      .post("http://localhost:9000/api/result", payload)
+      .then((res) => {
+        const { message } = res.data;
+        console.log(message);
+        setX(initialState.x);
+        setY(initialState.y);
+        setSteps(initialState.steps);
+        setEmail(initialState.email);
+        setMessage(message);
+      })
+      .catch((err) => {
+        console.log(err);
+        setMessage(err.message);
+      });
+  };
 
   return (
     <div id="wrapper" className={props.className}>
@@ -50,7 +73,7 @@ export default function AppFunctional(props) {
         <div className="square"></div>
       </div>
       <div className="info">
-        <h3 id="message"></h3>
+        <h3 id="message">{message}</h3>
       </div>
       <div id="keypad">
         <button id="left">LEFT</button>
@@ -59,8 +82,14 @@ export default function AppFunctional(props) {
         <button id="down">DOWN</button>
         <button id="reset">reset</button>
       </div>
-      <form>
-        <input id="email" type="email" placeholder="type email"></input>
+      <form onSubmit={onSubmit}>
+        <input
+          id="email"
+          type="email"
+          placeholder="type email"
+          value={email}
+          onChange={onChange}
+        ></input>
         <input id="submit" type="submit"></input>
       </form>
     </div>
