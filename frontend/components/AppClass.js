@@ -102,13 +102,13 @@ export default class AppClass extends React.Component {
 
     //function that helps with grid traversal
     const setLocation = () => {
-      grid.map((group) => {
-        if (group[0] === x && group[1] === y) {
-          group[2] = true;
-          group[3] = "B";
+      grid.map((square) => {
+        if (square[0] === x && square[1] === y) {
+          square[2] = true;
+          square[3] = "B";
         } else {
-          group[2] = false;
-          group[3] = null;
+          square[2] = false;
+          square[3] = null;
         }
       });
     };

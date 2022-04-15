@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const initialState = {
@@ -23,26 +23,28 @@ const initialState = {
 export default function AppFunctional(props) {
   const { className } = props;
   //set state
-  const [x, setX] = React.useState(initialState.x);
-  const [y, setY] = React.useState(initialState.y);
-  const [steps, setSteps] = React.useState(initialState.steps);
-  const [email, setEmail] = React.useState(initialState.email);
-  const [grid, setGrid] = React.useState(initialState.grid);
-  const [message, setMessage] = React.useState(initialState.message);
+  const [x, setX] = useState(initialState.x);
+  const [y, setY] = useState(initialState.y);
+  const [steps, setSteps] = useState(initialState.steps);
+  const [email, setEmail] = useState(initialState.email);
+  const [grid, setGrid] = useState(initialState.grid);
+  const [message, setMessage] = useState(initialState.message);
 
   //helpers for the form
   const onChange = (e) => {
     setEmail(e.target.value);
   };
-
+  //submit handler... Posts to axios, and then updates the state posting
+  //the response to messages in the dom
   const onSubmit = (e) => {
     e.preventDefault();
+    //using state to create a payload for axios
     const payload = { x, y, email, steps };
     axios
       .post("http://localhost:9000/api/result", payload)
       .then((res) => {
         const { message } = res.data;
-        console.log(message);
+        // console.log(message);
         setX(initialState.x);
         setY(initialState.y);
         setSteps(initialState.steps);
@@ -50,16 +52,40 @@ export default function AppFunctional(props) {
         setMessage(message);
       })
       .catch((err) => {
+        const { message } = err.message;
         console.log(err);
         setMessage(err.message);
       });
+  };
+  //controller logic grid navagation
+
+  //function to handle the move left event
+  const moveLeft = () => {
+    if (x > 1) {
+      setX(x - 1);
+      setSteps(steps + 1);
+    } else {
+      setMessage("You can't go left");
+    }
+  };
+
+  //function to handle the move right event
+  const moveRight = () => {
+    if (x < 3) {
+      setX(x + 1);
+      setSteps(steps + 1);
+    } else {
+      setMessage("You can't go right");
+    }
   };
 
   return (
     <div id="wrapper" className={props.className}>
       <div className="info">
-        <h3 id="coordinates">Coordinates (2, 2)</h3>
-        <h3 id="steps">You moved 0 times</h3>
+        <h3 id="coordinates">
+          Coordinates ({x}, {y})
+        </h3>
+        <h3 id="steps">You moved {steps} times</h3>
       </div>
       <div id="grid">
         <div className="square"></div>
@@ -76,9 +102,13 @@ export default function AppFunctional(props) {
         <h3 id="message">{message}</h3>
       </div>
       <div id="keypad">
-        <button id="left">LEFT</button>
+        <button id="left" onClick={moveLeft}>
+          LEFT
+        </button>
         <button id="up">UP</button>
-        <button id="right">RIGHT</button>
+        <button id="right" onClick={moveRight}>
+          RIGHT
+        </button>
         <button id="down">DOWN</button>
         <button id="reset">reset</button>
       </div>
