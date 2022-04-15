@@ -1,8 +1,29 @@
-import React from 'react'
+import React from "react";
 
+const initialState = {
+  x: 2,
+  y: 2,
+  steps: 0,
+  email: "",
+  grid: [
+    [1, 1, false, null],
+    [2, 1, false, null],
+    [3, 1, false, null],
+    [1, 2, false, null],
+    [2, 2, true, "B"],
+    [3, 2, false, null],
+    [1, 3, false, null],
+    [2, 3, false, null],
+    [3, 3, false, null],
+  ],
+};
 export default class AppClass extends React.Component {
+  constructor() {
+    super();
+    this.state = initialState;
+  }
   render() {
-    const { className } = this.props
+    const { className } = this.props;
     return (
       <div id="wrapper" className={className}>
         <div className="info">
@@ -35,6 +56,6 @@ export default class AppClass extends React.Component {
           <input id="submit" type="submit"></input>
         </form>
       </div>
-    )
+    );
   }
 }
