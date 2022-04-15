@@ -45,11 +45,11 @@ export default function AppFunctional(props) {
       .then((res) => {
         const { message } = res.data;
         // console.log(message);
-        setX(initialState.x);
-        setY(initialState.y);
         // setSteps(initialState.steps);
         setEmail(initialState.email);
         setMessage(message);
+        setGrid(initialState.grid);
+        // setSteps(initialState.steps);
       })
       .catch((err) => {
         const { message } = err.response.data;
@@ -106,25 +106,45 @@ export default function AppFunctional(props) {
     setSteps(initialState.steps);
     setEmail(initialState.email);
     setMessage(initialState.message);
+    setGrid(initialState.grid);
   };
+
+  //function to set location on grid
+  const setLocation = () => {
+    grid.map((square) => {
+      if (square[0] === x && square[1] === y) {
+        square[2] = true;
+        square[3] = "B";
+      } else {
+        square[2] = false;
+        square[3] = null;
+      }
+    });
+  };
+
+  setLocation();
   return (
     <div id="wrapper" className={props.className}>
       <div className="info">
         <h3 id="coordinates">
           Coordinates ({x}, {y})
         </h3>
-        <h3 id="steps">You moved {steps} times</h3>
+        <h3 id="steps">
+          <h3 id="steps">You moved {steps} times</h3>
+        </h3>
       </div>
       <div id="grid">
-        <div className="square"></div>
-        <div className="square"></div>
-        <div className="square"></div>
-        <div className="square"></div>
-        <div className="square active">B</div>
-        <div className="square"></div>
-        <div className="square"></div>
-        <div className="square"></div>
-        <div className="square"></div>
+        {grid.map((square, index) => {
+          if (square[2] === true) {
+            return (
+              <div className="square active" key={index}>
+                {square[3]}
+              </div>
+            );
+          } else {
+            return <div className="square" key={index}></div>;
+          }
+        })}
       </div>
       <div className="info">
         <h3 id="message">{message}</h3>

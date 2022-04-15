@@ -4,7 +4,7 @@ import axios from "axios";
 //setting a init var to simplify state management
 //x and y are location on the grid, steps keeps track of steps taken
 //email is the email of the user, grid is the grid of the game,
-//and message is for the api messages to be displayed
+//and message is for the api messages to
 const initialState = {
   x: 2,
   y: 2,
@@ -102,13 +102,13 @@ export default class AppClass extends React.Component {
 
     //function that helps with grid traversal
     const setLocation = () => {
-      grid.map((square) => {
-        if (square[0] === x && square[1] === y) {
-          square[2] = true;
-          square[3] = "B";
+      grid.map((group) => {
+        if (group[0] === x && group[1] === y) {
+          group[2] = true;
+          group[3] = "B";
         } else {
-          square[2] = false;
-          square[3] = null;
+          group[2] = false;
+          group[3] = null;
         }
       });
     };
