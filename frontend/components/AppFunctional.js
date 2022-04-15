@@ -130,7 +130,7 @@ export default function AppFunctional(props) {
           Coordinates ({x}, {y})
         </h3>
         <h3 id="steps">
-          <h3 id="steps">You moved {steps} times</h3>
+          You moved {steps} {steps === 1 ? "time" : "times"}
         </h3>
       </div>
       <div id="grid">
